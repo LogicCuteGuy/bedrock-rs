@@ -98,4 +98,4 @@ If you find **bedrock-rs** helpful, don’t forget to give the repository a ⭐ 
 
 ## License
 
-**bedrock-rs** is open-source software licensed under the [Apache-2.0 License](LICENSE).  
+**bedrock-rs** is open-source software licensed under the [Apache-2.0 License](LICENSE-Apache).  
