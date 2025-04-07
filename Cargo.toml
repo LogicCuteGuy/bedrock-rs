@@ -1,13 +1,12 @@
 [package]
 name = "bedrockrs"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [workspace]
 members = ["crates/*"]
 
 [dependencies]
-bedrockrs_core = { path = "crates/core" }
 bedrockrs_shared = { path = "crates/shared" }
 
 bedrockrs_macros = { path = "crates/macros", optional = true }

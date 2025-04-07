@@ -1,10 +1,9 @@
 [package]
 name = "bedrockrs_level"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-bedrockrs_core = { path = "../core" }
 bedrockrs_shared = { path = "../shared" }
 
 nbtx = { git = "https://github.com/bedrock-crustaceans/nbtx" }

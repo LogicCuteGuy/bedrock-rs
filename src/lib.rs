@@ -1,5 +1,4 @@
 pub mod core {
-    pub use ::bedrockrs_core::*;
 
     pub use ::bedrockrs_shared::*;
 }
