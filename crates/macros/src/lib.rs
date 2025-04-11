@@ -24,7 +24,6 @@ mod size;
 )]
 pub fn proto_codec_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(item as DeriveInput);
-
     let name = input.ident;
 
     let generics = input.generics;

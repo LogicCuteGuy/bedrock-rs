@@ -6,7 +6,6 @@ edition = "2024"
 [dependencies]
 thiserror = "2.0"
 
-bedrockrs_shared = { path = "../shared" }
 bedrockrs_proto = { path = "../proto" }
 
 tokio = { version = "1.40", features = ["full", "tracing"] }

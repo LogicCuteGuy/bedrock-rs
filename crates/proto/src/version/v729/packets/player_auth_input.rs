@@ -6,9 +6,9 @@ use crate::version::v729::types::play_mode::PlayMode;
 use bedrockrs_macros::gamepacket;
 use bedrockrs_proto_core::error::ProtoCodecError;
 use bedrockrs_proto_core::{ProtoCodec, ProtoCodecLE, ProtoCodecVAR};
-use bedrockrs_shared::actor_unique_id::ActorUniqueID;
 use std::io::Cursor;
 use vek::{Vec2, Vec3};
+use crate::v662::types::ActorUniqueID;
 
 #[gamepacket(id = 144)]
 #[derive(Debug, Clone)]

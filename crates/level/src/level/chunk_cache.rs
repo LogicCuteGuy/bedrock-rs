@@ -1,5 +1,6 @@
-use bedrockrs_shared::world::dimension::Dimension;
+
 use vek::Vec2;
+use bedrockrs_proto::v662::enums::Dimension;
 
 #[derive(Debug, PartialEq, Hash, Eq, Clone)]
 pub struct SubchunkCacheKey {

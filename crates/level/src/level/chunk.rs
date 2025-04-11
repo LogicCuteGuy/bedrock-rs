@@ -1,10 +1,10 @@
 use crate::level::level::LevelModificationProvider;
 use crate::level::sub_chunk::SubChunkTrait;
 use crate::level::world_block::WorldBlockTrait;
-use bedrockrs_shared::world::dimension::Dimension;
 use std::fmt::Debug;
 use thiserror::Error;
 use vek::{Vec2, Vec3};
+use bedrockrs_proto::v662::enums::Dimension;
 
 /// Specifies the type of filter used when filling a region in the world.
 ///

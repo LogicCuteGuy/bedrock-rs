@@ -7,7 +7,6 @@ edition = "2024"
 members = ["crates/*"]
 
 [dependencies]
-bedrockrs_shared = { path = "crates/shared" }
 
 bedrockrs_macros = { path = "crates/macros", optional = true }
 

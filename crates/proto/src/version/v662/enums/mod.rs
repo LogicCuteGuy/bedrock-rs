@@ -105,3 +105,6 @@ export!(text_processing_event_origin);
 export!(ui_profile);
 export!(persona);
 export!(prediction_type);
+export!(dimension);
+export!(gamemode);
+export!(permissions_level);

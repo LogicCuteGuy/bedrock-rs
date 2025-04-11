@@ -1,5 +1,5 @@
 use bedrockrs_macros::ProtoCodec;
-use bedrockrs_shared::actor_unique_id::ActorUniqueID;
+use crate::v662::types::ActorUniqueID;
 
 #[derive(ProtoCodec, Debug, Clone)]
 #[enum_endianness(var)]

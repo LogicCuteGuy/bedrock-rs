@@ -1,6 +1,5 @@
 use bedrockrs_macros::ProtoCodec;
-use bedrockrs_shared::actor_unique_id::ActorUniqueID;
-
+use crate::v662::types::ActorUniqueID;
 use super::actor_link_type::ActorLinkType;
 
 #[derive(ProtoCodec, Debug, Clone)]

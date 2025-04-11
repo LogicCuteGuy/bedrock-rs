@@ -2,8 +2,8 @@ use crate::version::v729::types::chunk_pos::ChunkPos;
 use bedrockrs_macros::gamepacket;
 use bedrockrs_proto_core::error::ProtoCodecError;
 use bedrockrs_proto_core::ProtoCodec;
-use bedrockrs_shared::world::dimension::Dimension;
 use varint_rs::VarintWriter;
+use crate::v662::enums::Dimension;
 
 #[gamepacket(id = 58)]
 #[derive(Debug, Clone)]

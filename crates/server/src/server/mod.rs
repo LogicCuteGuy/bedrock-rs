@@ -1,6 +1,5 @@
 use crate::error::LoginError;
 use bedrockrs_proto::listener::Listener;
-use shipyard::World;
 use std::error::Error;
 
 pub mod builder;
@@ -9,7 +8,7 @@ pub struct Server {
     listeners: Vec<Listener>,
     name: String,
     sub_name: String,
-    pub world: World,
+    // pub world: World,
 }
 
 impl Server {
@@ -18,7 +17,7 @@ impl Server {
             listener.start().await.unwrap();
         }
 
-        self.world.run_default_workload().unwrap()
+        // self.world.run_default_workload().unwrap()
     }
 
     pub async fn stop(&mut self) {

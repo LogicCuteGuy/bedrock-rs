@@ -1,6 +1,6 @@
 use bedrockrs_macros::ProtoCodec;
-use bedrockrs_shared::actor_unique_id::ActorUniqueID;
-use bedrockrs_shared::world::permissions_level::PermissionLevel;
+use crate::v662::enums::PermissionLevel;
+use crate::v662::types::ActorUniqueID;
 
 #[derive(ProtoCodec, Debug, Clone)]
 pub struct AbilityData {

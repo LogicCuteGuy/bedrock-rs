@@ -59,7 +59,7 @@ impl ServerBuilder {
             listeners,
             name: self.name,
             sub_name: self.sub_name,
-            world: Default::default(),
+            // world: Default::default(),
         }
     }
 }

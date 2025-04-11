@@ -1,9 +1,9 @@
 use crate::level::db_interface::bedrock_key::ChunkKey;
-use bedrockrs_shared::world::dimension::Dimension;
 use std::collections::HashSet;
 use std::ops::Range;
 use std::path::Path;
 use vek::Vec2;
+use bedrockrs_proto::v662::enums::Dimension;
 
 pub struct DatabaseBatchHolder {
     collective: Vec<u8>,

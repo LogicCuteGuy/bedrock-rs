@@ -1,5 +1,5 @@
 use bedrockrs_macros::{gamepacket, ProtoCodec};
-use bedrockrs_shared::world::gamemode::Gamemode;
+use crate::v662::enums::Gamemode;
 
 #[gamepacket(id = 62)]
 #[derive(ProtoCodec, Debug, Clone)]

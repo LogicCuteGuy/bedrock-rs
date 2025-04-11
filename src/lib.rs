@@ -1,8 +1,3 @@
-pub mod core {
-
-    pub use ::bedrockrs_shared::*;
-}
-
 #[cfg(feature = "level")]
 pub mod level {
     pub use ::bedrockrs_level::*;

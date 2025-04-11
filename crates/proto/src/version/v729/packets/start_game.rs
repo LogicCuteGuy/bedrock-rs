@@ -2,13 +2,11 @@ use bedrockrs_macros::{gamepacket, ProtoCodec};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use vek::{Vec2, Vec3};
-
+use crate::v662::enums::Gamemode;
+use crate::v662::types::{ActorRuntimeID, ActorUniqueID};
 use crate::version::v729::types::level_settings::LevelSettings;
 use crate::version::v729::types::network_permissions::NetworkPermissions;
 use crate::version::v729::types::player_movement_settings::PlayerMovementSettings;
-use bedrockrs_shared::actor_runtime_id::ActorRuntimeID;
-use bedrockrs_shared::actor_unique_id::ActorUniqueID;
-use bedrockrs_shared::world::gamemode::Gamemode;
 
 #[gamepacket(id = 11)]
 #[derive(ProtoCodec, Debug, Clone)]

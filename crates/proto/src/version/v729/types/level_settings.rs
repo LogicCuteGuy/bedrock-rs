@@ -1,9 +1,5 @@
 use bedrockrs_macros::ProtoCodec;
-
-use bedrockrs_shared::world::difficulty::Difficulty;
-use bedrockrs_shared::world::gamemode::Gamemode;
-use bedrockrs_shared::world::generator_type::GeneratorType;
-
+use crate::v662::enums::{Difficulty, EditorWorldType, Gamemode, GeneratorType};
 use crate::version::v729::types::base_game_version::BaseGameVersion;
 use crate::version::v729::types::block_pos::BlockPos;
 use crate::version::v729::types::chat_restriction_level::ChatRestrictionLevel;
@@ -11,7 +7,6 @@ use crate::version::v729::types::edu_shared_uri_resource::EduSharedResourceUri;
 use crate::version::v729::types::experiments::Experiments;
 use crate::version::v729::types::gamerule::GameRule;
 use crate::version::v729::types::spawn_settings::SpawnSettings;
-use bedrockrs_shared::world::editor_world_type::EditorWorldType;
 
 #[derive(ProtoCodec, Debug, Clone)]
 pub struct LevelSettings {

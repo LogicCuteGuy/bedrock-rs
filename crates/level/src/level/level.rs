@@ -6,7 +6,6 @@ use crate::level::sub_chunk::{SubChunkDecoder, SubChunkTrait};
 use crate::level::world_block::WorldBlockTrait;
 use crate::level_try;
 use crate::types::clear_cache::ClearCacheContainer;
-use bedrockrs_shared::world::dimension::Dimension;
 use std::collections::hash_set::Iter;
 use std::collections::HashSet;
 use std::fmt::Debug;
@@ -15,6 +14,7 @@ use std::marker::PhantomData;
 use std::path::Path;
 use thiserror::Error;
 use vek::Vec2;
+use bedrockrs_proto::v662::enums::Dimension;
 
 /// This is used when filtering chunks.
 /// `ChunkSelectionFilter::Dimension` is used to just check if the dimension is the same.

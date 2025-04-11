@@ -1,9 +1,9 @@
 use crate::level::db_interface::db::LevelDBKey;
 use crate::level::db_interface::key_level::KeyTypeTag;
-use bedrockrs_shared::world::dimension::Dimension;
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::io::Cursor;
 use vek::Vec2;
+use bedrockrs_proto::v662::enums::Dimension;
 
 #[derive(Debug)]
 pub struct ChunkKey {

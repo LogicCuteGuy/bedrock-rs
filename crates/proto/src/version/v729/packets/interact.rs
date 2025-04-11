@@ -2,9 +2,9 @@ use crate::version::v729::types::interact_action::InteractAction;
 use bedrockrs_macros::gamepacket;
 use bedrockrs_proto_core::error::ProtoCodecError;
 use bedrockrs_proto_core::{ProtoCodec, ProtoCodecLE};
-use bedrockrs_shared::actor_runtime_id::ActorRuntimeID;
 use std::io::Cursor;
 use vek::Vec3;
+use crate::v662::types::ActorRuntimeID;
 
 #[gamepacket(id = 33)]
 #[derive(Debug, Clone)]

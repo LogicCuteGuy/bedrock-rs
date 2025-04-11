@@ -2,7 +2,6 @@ use crate::level::db_interface::bedrock_key::ChunkKey;
 use crate::level::db_interface::db::LevelDBKey;
 use crate::level::db_interface::key_level::KeyTypeTag;
 use crate::level::file_interface::RawWorldTrait;
-use bedrockrs_shared::world::dimension::Dimension;
 use byteorder::{LittleEndian, ReadBytesExt};
 use miniz_oxide::deflate::{compress_to_vec, compress_to_vec_zlib, CompressionLevel};
 use miniz_oxide::inflate::{decompress_to_vec, decompress_to_vec_zlib};
@@ -15,6 +14,7 @@ use std::path::Path;
 use std::rc::Rc;
 use thiserror::Error;
 use vek::Vec2;
+use bedrockrs_proto::v662::enums::Dimension;
 
 struct ZlibCompressor(u8);
 
