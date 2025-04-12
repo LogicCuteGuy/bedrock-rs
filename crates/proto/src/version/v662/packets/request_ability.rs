@@ -2,8 +2,8 @@ use crate::version::v662::enums::AbilitiesIndex;
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum Type {
     Unset = 0,
     Bool {

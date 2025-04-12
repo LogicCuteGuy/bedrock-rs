@@ -6,8 +6,8 @@ use byteorder::{ReadBytesExt, WriteBytesExt};
 use std::io::{Cursor, Read};
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum Action {
     Invalid = 0,
     StopRiding {

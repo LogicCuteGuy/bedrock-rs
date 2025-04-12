@@ -1,3 +1,5 @@
+mod actor_flags_bitset;
+
 macro_rules! export {
     ($name:ident) => {
         mod $name;

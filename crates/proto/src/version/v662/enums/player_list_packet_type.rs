@@ -19,8 +19,8 @@ pub struct AddPlayerListEntry {
 }
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum PlayerListPacketType {
     Add {
         #[vec_repr(u32)]

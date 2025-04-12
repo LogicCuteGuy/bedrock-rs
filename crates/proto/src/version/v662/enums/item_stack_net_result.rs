@@ -2,8 +2,8 @@ use crate::version::v662::types::ItemStackResponseContainerInfo;
 use bedrockrs_macros::ProtoCodec;
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum ItemStackNetResult {
     Success(
         #[vec_repr(u32)]

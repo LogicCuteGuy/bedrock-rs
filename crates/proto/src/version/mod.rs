@@ -6,3 +6,4 @@ pub mod v712;
 pub mod v729;
 pub mod v748;
 pub mod v766;
+pub mod v776;

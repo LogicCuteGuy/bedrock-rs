@@ -7,8 +7,8 @@ use std::io::Cursor;
 use std::mem::size_of;
 
 #[derive(ProtoCodec, Clone, Debug, PartialEq)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum HeightMapDataType {
     NoData = 0,
     HasData = 1,
@@ -17,8 +17,8 @@ pub enum HeightMapDataType {
 }
 
 #[derive(ProtoCodec, Clone, Debug, PartialEq)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum SubChunkRequestResult {
     Undefined = 0,
     Success = 1,

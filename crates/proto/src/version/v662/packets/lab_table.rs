@@ -3,8 +3,8 @@ use crate::version::v662::types::BlockPos;
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum Type {
     StartCombine = 0,
     StartReaction = 1,

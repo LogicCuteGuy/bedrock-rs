@@ -2,16 +2,16 @@ use bedrockrs_macros::{gamepacket, ProtoCodec};
 use vek::Vec2;
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum Action {
     Set = 0,
     Clear = 1,
 }
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum TargetMode {
     Angle = 0,
     Distance = 1,

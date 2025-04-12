@@ -2,8 +2,8 @@ use bedrockrs_macros::ProtoCodec;
 use vek::{Vec2, Vec3};
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum AudioListener {
     Camera = 0,
     Player = 1,

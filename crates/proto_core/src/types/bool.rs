@@ -1,7 +1,6 @@
 use byteorder::{ReadBytesExt, WriteBytesExt};
-use std::io::Cursor;
+use std::io::{Cursor, Read};
 use std::mem::size_of;
-
 use crate::error::ProtoCodecError;
 use crate::ProtoCodec;
 

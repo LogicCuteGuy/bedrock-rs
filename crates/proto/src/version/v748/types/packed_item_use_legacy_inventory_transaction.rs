@@ -27,8 +27,8 @@ pub enum TriggerType {
 }
 
 #[derive(ProtoCodec, Clone, Debug)]
-#[enum_repr(i8)]
-#[repr(i8)]
+#[enum_repr(u8)]
+#[repr(u8)]
 pub enum PredictedResult {
     Failure = 0,
     Success = 1,
