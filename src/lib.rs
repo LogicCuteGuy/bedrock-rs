@@ -19,11 +19,6 @@ pub mod proto {
     }
 }
 
-#[cfg(feature = "server")]
-pub mod server {
-    pub use ::bedrockrs_server::*;
-}
-
 #[cfg(feature = "form")]
 pub mod form {
     pub use ::bedrockrs_form::*;
