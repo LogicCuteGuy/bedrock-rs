@@ -59,8 +59,7 @@ async fn handle_login(mut conn: Connection) {
     conn.compression = Some(compression);
 
     // Login
-    conn.recv::<ProtoHelperV662>().await.unwrap();
-    println!("Login");
+    println!("{:?}", conn.recv::<ProtoHelperV662>().await.unwrap());
 
     conn.send::<ProtoHelperV662>(&[
         GamePackets::PlaySatus(PlayStatusPacket {

@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use serde_json::Value;
+use serde_json::{Map, Value};
 use crate::version::v662::enums::{AnimatedTextureType, AnimationExpression};
 use bedrockrs_macros::ProtoCodec;
 use bedrockrs_proto_core::error::ProtoCodecError;
@@ -152,7 +152,7 @@ pub struct SerializedSkin {
 }
 
 impl SerializedSkin {
-    pub fn decode(json: &Value) -> Result<Self, ProtoCodecError> {
+    pub fn decode(json: Map<String, Value>) -> Result<Self, ProtoCodecError> {
         let skin_id = json.get("SkinId")
             .and_then(|v| v.as_str())
             .unwrap_or("")
