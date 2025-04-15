@@ -44,13 +44,13 @@ async fn handle_login(mut conn: Connection<ProtoHelperV766>) {
     let time_start = Instant::now();
 
     // NetworkSettingsRequest
-    conn.recv::<ProtoHelperV766>().await.unwrap();
+    conn.recv().await.unwrap();
     println!("NetworkSettingsRequest");
 
     let compression = Compression::None;
 
     // NetworkSettings
-    conn.send::<ProtoHelperV766>(&[GamePackets::NetworkSettings(NetworkSettingsPacket {
+    conn.send(&[GamePackets::NetworkSettings(NetworkSettingsPacket {
         compression_threshold: 1,
         compression_algorithm: PacketCompressionAlgorithm::None,
         client_throttle_enabled: false,
@@ -64,9 +64,9 @@ async fn handle_login(mut conn: Connection<ProtoHelperV766>) {
     conn.compression = Some(compression);
 
     // Login
-    println!("Login data {:?}", conn.recv::<ProtoHelperV766>().await.unwrap());
+    println!("Login data {:?}", conn.recv().await.unwrap());
 
-    conn.send::<ProtoHelperV766>(&[
+    conn.send(&[
         GamePackets::PlaySatus(PlayStatusPacket {
             status: PlayStatusType::LoginSuccess,
         }),
@@ -101,7 +101,7 @@ async fn handle_login(mut conn: Connection<ProtoHelperV766>) {
     // println!("{:#?}", conn.recv::<ProtoHelperV662>().await);
     // println!("ResourcePackClientResponse");
 
-    conn.send::<ProtoHelperV766>(&[
+    conn.send(&[
         GamePackets::Disconnect(DisconnectPacket {
             reason: ConnectionFailReason::Unknown,
             messages: Some(DisconnectPacketMessage{
@@ -236,7 +236,7 @@ async fn handle_login(mut conn: Connection<ProtoHelperV766>) {
     println!("{:?}", time_end.duration_since(time_start));
 
     loop {
-        let res = conn.recv::<ProtoHelperV766>().await;
+        let res = conn.recv().await;
 
         if let Ok(packet) = res {
             println!("{:?}", packet);

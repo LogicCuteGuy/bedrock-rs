@@ -5,7 +5,7 @@ use std::collections::VecDeque;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-pub fn shard<T: ProtoHelper>(connection: Connection) -> ConnectionShared<T> {
+pub fn shard<T: ProtoHelper>(connection: Connection<T>) -> ConnectionShared<T> {
     ConnectionShared::<T> {
         connection: Arc::new(RwLock::new(connection)),
         queue_send: Arc::new(RwLock::new(Vec::new())),
@@ -15,7 +15,7 @@ pub fn shard<T: ProtoHelper>(connection: Connection) -> ConnectionShared<T> {
 
 #[derive(Clone)]
 pub struct ConnectionShared<T: ProtoHelper> {
-    connection: Arc<RwLock<Connection>>,
+    connection: Arc<RwLock<Connection<T>>>,
     queue_send: Arc<RwLock<Vec<T::GamePacketType>>>,
     queue_recv: Arc<RwLock<VecDeque<T::GamePacketType>>>,
 }
@@ -45,7 +45,7 @@ impl<T: ProtoHelper> ConnectionShared<T> {
         let mut gamepackets = self.queue_send.write().await;
         let mut conn = self.connection.write().await;
 
-        conn.send::<T>(gamepackets.as_slice()).await?;
+        conn.send(gamepackets.as_slice()).await?;
 
         gamepackets.clear();
 
@@ -55,7 +55,7 @@ impl<T: ProtoHelper> ConnectionShared<T> {
     pub async fn recv(&mut self) -> Result<(), ConnectionError> {
         let mut conn = self.connection.write().await;
 
-        let gamepackets = conn.recv::<T>().await?;
+        let gamepackets = conn.recv().await?;
 
         if !gamepackets.is_empty() {
             let mut queue_recv = self.queue_recv.write().await;

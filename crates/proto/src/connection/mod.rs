@@ -7,23 +7,23 @@ use crate::error::ConnectionError;
 use crate::helper::ProtoHelper;
 use crate::transport::TransportLayerConnection;
 
+// Add generic parameter <T> with ProtoHelper trait bound to the struct
 pub struct Connection<T: ProtoHelper> {
-    /// Represents the Connection's internal transport layer, which may vary
     transport_layer: TransportLayerConnection,
-    /// Represents the Connection's Compression, the compression gets initialized in the
-    /// login process
     pub compression: Option<Compression>,
-    /// Represents the connections encryption, the encryption gets initialized in the
-    /// login process, if encryption is enabled
     pub encryption: Option<Encryption>,
+    // PhantomData to mark the T type as used
+    _marker: std::marker::PhantomData<T>,
 }
 
+// Implement methods for Connection<T> where T has ProtoHelper
 impl<T: ProtoHelper> Connection<T> {
     pub(crate) fn from_transport_conn(transport_layer: TransportLayerConnection) -> Self {
         Self {
             transport_layer,
             compression: None,
             encryption: None,
+            _marker: std::marker::PhantomData,
         }
     }
 
@@ -38,33 +38,29 @@ impl<T: ProtoHelper> Connection<T> {
         )?;
 
         self.transport_layer.send(&gamepacket_stream).await?;
-
         Ok(())
     }
 
-    pub async fn send_raw(&mut self, data: &[u8]) -> Result<(), ConnectionError> {
-        self.transport_layer.send(data).await?;
-
-        Ok(())
-    }
-
-    pub async fn recv(
-        &mut self,
-    ) -> Result<Vec<T::GamePacketType>, ConnectionError> {
+    pub async fn recv(&mut self) -> Result<Vec<T::GamePacketType>, ConnectionError> {
         let gamepacket_stream = self.transport_layer.recv().await?;
-
         let gamepackets = decode_gamepackets::<T>(
             gamepacket_stream,
             self.compression.as_ref(),
             self.encryption.as_mut(),
         )?;
-
         Ok(gamepackets)
+    }
+}
+
+// Implement non-generic methods for Connection
+impl<T: ProtoHelper> Connection<T> {
+    pub async fn send_raw(&mut self, data: &[u8]) -> Result<(), ConnectionError> {
+        self.transport_layer.send(data).await?;
+        Ok(())
     }
 
     pub async fn recv_raw(&mut self) -> Result<Vec<u8>, ConnectionError> {
         let stream = self.transport_layer.recv().await?;
-
         Ok(stream)
     }
 

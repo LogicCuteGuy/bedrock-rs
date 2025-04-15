@@ -8,8 +8,8 @@ use tokio::sync::watch::Ref;
 use tokio::sync::{mpsc, watch};
 use tokio::time::Interval;
 
-pub async fn shard<'t, T: ProtoHelper + Send + Sync + 't>(
-    mut connection: Connection,
+pub async fn shard<'t, T: ProtoHelper + Send + Sync + 't + 'static>(
+    mut connection: Connection<T>,
     // TODO: Look into making flush_interval optional
     _flush_interval: Interval,
     gamepacket_buffer_size: usize,
@@ -54,11 +54,11 @@ where
                         break 'select;
                     }
 
-                    connection.send::<T>(gamepackets.as_slice()).await.unwrap();
+                    connection.send(gamepackets.as_slice()).await.unwrap();
                     //println!("Sent {gamepackets:#?}");
                     gamepackets.clear();
                 },
-                res = connection.recv::<T>() => {
+                res = connection.recv() => {
                     match res {
                         Ok(gamepackets) => for gamepacket in gamepackets {
                             //println!("Received {gamepacket:#?}");
