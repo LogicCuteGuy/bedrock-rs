@@ -59,7 +59,7 @@ async fn handle_login(mut conn: Connection) {
     conn.compression = Some(compression);
 
     // Login
-    println!("{:?}", conn.recv::<ProtoHelperV662>().await.unwrap());
+    println!("Login data {:?}", conn.recv::<ProtoHelperV662>().await.unwrap());
 
     conn.send::<ProtoHelperV662>(&[
         GamePackets::PlaySatus(PlayStatusPacket {
@@ -91,10 +91,10 @@ async fn handle_login(mut conn: Connection) {
     println!("ResourcePacksInfo");
     println!("ResourcePackStack");
 
-    println!("{:#?}", conn.recv::<ProtoHelperV662>().await.unwrap());
-    println!("ClientCacheStatus");
-    println!("{:#?}", conn.recv::<ProtoHelperV662>().await.unwrap());
-    println!("ResourcePackClientResponse");
+    // println!("{:#?}", conn.recv::<ProtoHelperV662>().await);
+    // println!("ClientCacheStatus");
+    // println!("{:#?}", conn.recv::<ProtoHelperV662>().await);
+    // println!("ResourcePackClientResponse");
 
     // conn.send::<ProtoHelperV729>(&[GamePackets::DisconnectPlayer(DisconnectPlayerPacket {
     //     reason: DisconnectReason::Unknown,

@@ -44,6 +44,7 @@ impl ProtoCodec for LoginPacket {
         let mut username = String::new();
         let mut client_uuid = Uuid::nil();
         let mut issue_unix_time = 0i64;
+        let mut title_id = String::new();
 
         let binding = vec![];
         let chains = jwt_json.get("chain").and_then(|v| v.as_array()).unwrap_or(&binding);
@@ -54,6 +55,9 @@ impl ProtoCodec for LoginPacket {
                 if let Some(extra_data) = mid.get("extraData").and_then(|v| v.as_object()) {
                     if let Some(name) = extra_data.get("displayName").and_then(|v| v.as_str()) {
                         username = name.to_string();
+                    }
+                    if let Some(titleId) = extra_data.get("titleId").and_then(|v| v.as_str()) {
+                        title_id = titleId.to_string();
                     }
                     if let Some(uuid_str) = extra_data.get("identity").and_then(|v| v.as_str()) {
                         client_uuid = Uuid::parse_str(uuid_str)?;
@@ -70,11 +74,6 @@ impl ProtoCodec for LoginPacket {
         let client_id = skin_json.get("ClientRandomId")
             .and_then(|v| v.as_i64())
             .unwrap_or_default();
-
-        let title_id = skin_json.get("TitleId")
-            .and_then(|v| v.as_str())
-            .unwrap_or("")
-            .to_string();
 
         let skin = SerializedSkin::decode(skin_json)?;
 
