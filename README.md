@@ -33,16 +33,14 @@ To maintain modularity and scalability, **bedrock-rs** is divided into multiple 
 
 - [`bedrockrs::proto`](crates/proto)  
     - [X] Complete implementation of the Minecraft Bedrock protocol.  
-    - [X] Support for both server-side and client-side operations.  
-    - [X] Multi-protocol compatibility for handling multiple versions seamlessly.  
+    - [X] Support for both server-side and client-side operations.
 
 - [`bedrockrs::level`](crates/level)  
     - [X] Data structures for managing Minecraft Bedrock levels.  
     - [X] Implementation of Bedrock’s level format using Rust’s LevelDB.  
 
 - [`bedrockrs::server`](/crates/server)  
-    - [X] A lightweight foundation for Minecraft Bedrock server software.  
-    - [X] Built-in support for multi-protocol handling.  
+    - [X] A lightweight foundation for Minecraft Bedrock server software.
     - [X] Asynchronous architecture powered by Tokio.  
 
 ---
@@ -50,7 +48,6 @@ To maintain modularity and scalability, **bedrock-rs** is divided into multiple 
 ## Features
 
 - **Modular Architecture:** Enable only the features you need for your project.  
-- **Multi-Protocol Support:** Work with different protocol versions effortlessly.  
 - **Cross-Platform Compatibility:** Designed to work seamlessly across platforms.  
 - **Lightweight and Efficient:** Built with Rust’s performance and safety features.  
 
