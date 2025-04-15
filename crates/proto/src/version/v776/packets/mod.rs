@@ -1,4 +1,3 @@
-
 macro_rules! export {
     ($name:ident) => {
         mod $name;
@@ -13,3 +12,4 @@ export!(item_registry);
 export!(camera_aim_assist_presets);
 export!(command_block_update);
 export!(start_game);
+export!(camera_instruction);
