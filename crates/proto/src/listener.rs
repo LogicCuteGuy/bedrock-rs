@@ -7,10 +7,11 @@ use rand::random;
 use crate::connection::Connection;
 use crate::error::{ListenerError, RakNetError, TransportLayerError};
 use crate::info::MINECRAFT_EDITION_MOTD;
+use crate::ProtoHelper;
 use crate::transport::TransportLayerListener;
 use crate::version::v729::info::PROTOCOL_VERSION;
 
-pub struct Listener {
+pub struct Listener<T: ProtoHelper> {
     listener: TransportLayerListener,
     name: String,
     sub_name: String,
@@ -20,7 +21,7 @@ pub struct Listener {
     guid: u64,
 }
 
-impl Listener {
+impl<T:ProtoHelper> Listener<T> {
     pub async fn new_raknet(
         name: String,
         sub_name: String,
@@ -76,7 +77,7 @@ impl Listener {
         Ok(())
     }
 
-    pub async fn accept(&mut self) -> Result<Connection, ListenerError> {
+    pub async fn accept(&mut self) -> Result<Connection<T>, ListenerError> {
         let rak_conn = self.listener.accept().await?;
 
         Ok(Connection::from_transport_conn(rak_conn))

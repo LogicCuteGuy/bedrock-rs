@@ -7,7 +7,7 @@ use crate::error::ConnectionError;
 use crate::helper::ProtoHelper;
 use crate::transport::TransportLayerConnection;
 
-pub struct Connection {
+pub struct Connection<T: ProtoHelper> {
     /// Represents the Connection's internal transport layer, which may vary
     transport_layer: TransportLayerConnection,
     /// Represents the Connection's Compression, the compression gets initialized in the
@@ -18,7 +18,7 @@ pub struct Connection {
     pub encryption: Option<Encryption>,
 }
 
-impl Connection {
+impl<T: ProtoHelper> Connection<T> {
     pub(crate) fn from_transport_conn(transport_layer: TransportLayerConnection) -> Self {
         Self {
             transport_layer,
@@ -27,7 +27,7 @@ impl Connection {
         }
     }
 
-    pub async fn send<T: ProtoHelper>(
+    pub async fn send(
         &mut self,
         gamepackets: &[T::GamePacketType],
     ) -> Result<(), ConnectionError> {
