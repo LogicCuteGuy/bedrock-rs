@@ -1,5 +1,4 @@
 use bedrockrs_macros::ProtoCodec;
-
 use crate::v662::enums::Dimension;
 use crate::version::v729::types::spawn_biome_type::SpawnBiomeType;
 

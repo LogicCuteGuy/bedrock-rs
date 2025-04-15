@@ -1,9 +1,11 @@
 use crate::version::v662::enums::GameType;
-use crate::version::v662::types::{ActorRuntimeID, ActorUniqueID, ItemData, NetworkPermissions, SyncedPlayerMovementSettings};
+use crate::version::v662::types::{ActorRuntimeID, ActorUniqueID, ItemData, SyncedPlayerMovementSettings};
 use crate::version::v748::types::LevelSettings;
 use vek::{Vec2, Vec3};
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 use uuid::Uuid;
+use crate::v729::types::network_permissions::NetworkPermissions;
+use crate::v729::types::player_movement_settings::PlayerMovementSettings;
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct BlockProperty {
@@ -27,7 +29,7 @@ pub struct StartGamePacket {
     pub level_name: String,
     pub template_content_identity: String,
     pub is_trial: bool,
-    pub movement_settings: SyncedPlayerMovementSettings,
+    pub movement_settings: PlayerMovementSettings,
     #[endianness(le)]
     pub current_level_time: u64,
     #[endianness(var)]

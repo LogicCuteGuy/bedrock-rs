@@ -1,10 +1,11 @@
 use crate::version::v662::enums::GameType;
-use crate::version::v662::types::{ActorRuntimeID, ActorUniqueID, ItemData, NetworkPermissions, SyncedPlayerMovementSettings};
+use crate::version::v662::types::{ActorRuntimeID, ActorUniqueID, ItemData, SyncedPlayerMovementSettings};
 use crate::version::v748::types::LevelSettings;
 use vek::{Vec2, Vec3};
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 use uuid::Uuid;
 use crate::v662::enums::{Dimension, Gamemode, SpawnBiomeType};
+use crate::v729::types::network_permissions::NetworkPermissions;
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct BlockProperty {

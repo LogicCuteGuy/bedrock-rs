@@ -1,8 +1,8 @@
 use bedrockrs_level::level::chunk::{FillFilter, LevelChunkTrait};
 use bedrockrs_level::level::level::default_impl::*;
 use bedrockrs_level::level::level::ChunkSelectionFilter;
-use bedrockrs_shared::world::dimension::Dimension;
 use std::path::Path;
+use bedrockrs_proto::v662::enums::Dimension;
 
 #[cfg(feature = "default-impl")]
 #[test]

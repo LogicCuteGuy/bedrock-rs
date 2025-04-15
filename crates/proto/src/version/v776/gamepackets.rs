@@ -36,7 +36,7 @@ use crate::version::v662::packets::{
     NetworkChunkPublisherUpdatePacket, NetworkSettingsPacket, NetworkStackLatencyPacket,
     NpcDialoguePacket, NpcRequestPacket, OnScreenTextureAnimationPacket, OpenSignPacket,
     PacketViolationWarningPacket, PassengerJumpPacket, PhotoTransferPacket, PlaySoundPacket,
-    PlayStatusPacket, PlayerEnchantOptionsPacket, PlayerFogPacket, PlayerHotbarPacket,
+    PlayerEnchantOptionsPacket, PlayerFogPacket, PlayerHotbarPacket,
     PlayerInputPacket, PlayerSkinPacket, PlayerStartItemCooldownPacket,
     PlayerToggleCrafterSlotRequestPacket, PositionTrackingDBClientRequestPacket,
     PositionTrackingDBServerBroadcastPacket, PurchaseReceiptPacket, RefreshEntitlementsPacket,
@@ -69,7 +69,8 @@ use crate::version::v766::packets::{
 use bedrockrs_macros::gamepackets;
 use bedrockrs_proto_core::sub_client::SubClientID;
 use std::io::{Cursor, Write};
-use crate::v776::packets::StartGamePacket;
+use crate::v729::packets::play_status::PlayStatusPacket;
+use crate::v776::packets::{ItemRegistryPacket, StartGamePacket};
 
 gamepackets! {
     CurrentStructureFeature: CurrentStructureFeaturePacket,
@@ -277,5 +278,6 @@ gamepackets! {
     RefreshEntitlements: RefreshEntitlementsPacket,
     PlayerToggleCrafterSlotRequest: PlayerToggleCrafterSlotRequestPacket,
     SetPlayerInventoryOptions: SetPlayerInventoryOptionsPacket,
-    SetHud: SetHudPacket
+    SetHud: SetHudPacket,
+    ItemRegistryPacket: ItemRegistryPacket
 }
