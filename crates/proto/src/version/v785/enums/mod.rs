@@ -1,3 +1,4 @@
+
 macro_rules! export {
     ($name:ident) => {
         mod $name;
@@ -5,5 +6,3 @@ macro_rules! export {
     };
 }
 
-export!(structure_editor_data);
-export!(camera_instruction);

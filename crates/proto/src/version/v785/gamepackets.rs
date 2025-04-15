@@ -72,6 +72,7 @@ use std::io::{Cursor, Write};
 use crate::v729::packets::play_status::PlayStatusPacket;
 use crate::v766::packets::CameraAimAssistPacket;
 use crate::v776::packets::{CameraAimAssistPresetsPacket, ClientCameraAimAssistPacket, ClientMovementPredictionSyncPacket, CommandBlockUpdatePacket, CreativeContentPacket, ItemRegistryPacket, StartGamePacket};
+use crate::v785::packets::{PlayerUpdateEntityOverridesPacket, PlayerVideoCapturePacket, UpdateClientOptionsPacket};
 
 gamepackets! {
     CurrentStructureFeature: CurrentStructureFeaturePacket,
@@ -283,6 +284,7 @@ gamepackets! {
     ItemRegistry: ItemRegistryPacket,
     ClientCameraAimAssist: ClientCameraAimAssistPacket,
     ClientMovementPredictionSync: ClientMovementPredictionSyncPacket,
-
-
+    PlayerUpdateEntityOverrides: PlayerUpdateEntityOverridesPacket,
+    PlayerVideoCapture: PlayerVideoCapturePacket,
+    UpdateClientOptions: UpdateClientOptionsPacket,
 }
