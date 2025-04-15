@@ -1,5 +1,6 @@
-use crate::version::v662::types::{BaseGameVersion, Experiments};
 use bedrockrs_macros::{gamepacket, ProtoCodec};
+use crate::v729::types::base_game_version::BaseGameVersion;
+use crate::v729::types::experiments::Experiments;
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct PackEntry {

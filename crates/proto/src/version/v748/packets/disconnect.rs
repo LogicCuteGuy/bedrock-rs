@@ -1,8 +1,8 @@
-use crate::version::v662::enums::ConnectionFailReason;
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 use bedrockrs_proto_core::error::ProtoCodecError;
 use bedrockrs_proto_core::ProtoCodec;
 use std::io::Cursor;
+use crate::v662::enums::ConnectionFailReason;
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct DisconnectPacketMessage {
