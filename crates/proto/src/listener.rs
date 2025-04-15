@@ -11,7 +11,7 @@ use crate::ProtoHelper;
 use crate::transport::TransportLayerListener;
 use crate::version::v729::info::PROTOCOL_VERSION;
 
-pub struct Listener<T: ProtoHelper> {
+pub struct Listener {
     listener: TransportLayerListener,
     name: String,
     sub_name: String,
@@ -21,7 +21,7 @@ pub struct Listener<T: ProtoHelper> {
     guid: u64,
 }
 
-impl<T:ProtoHelper> Listener<T> {
+impl Listener {
     pub async fn new_raknet(
         name: String,
         sub_name: String,
@@ -77,7 +77,7 @@ impl<T:ProtoHelper> Listener<T> {
         Ok(())
     }
 
-    pub async fn accept(&mut self) -> Result<Connection<T>, ListenerError> {
+    pub async fn accept<T: ProtoHelper>(&mut self) -> Result<Connection<T>, ListenerError> {
         let rak_conn = self.listener.accept().await?;
 
         Ok(Connection::from_transport_conn(rak_conn))

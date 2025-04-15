@@ -48,7 +48,7 @@ impl<T: ProtoHelper> Connection<T> {
         Ok(())
     }
 
-    pub async fn recv<T: ProtoHelper>(
+    pub async fn recv(
         &mut self,
     ) -> Result<Vec<T::GamePacketType>, ConnectionError> {
         let gamepacket_stream = self.transport_layer.recv().await?;

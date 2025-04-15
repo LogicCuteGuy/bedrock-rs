@@ -40,7 +40,7 @@ async fn main() {
     }
 }
 
-async fn handle_login(mut conn: Connection) {
+async fn handle_login(mut conn: Connection<ProtoHelperV766>) {
     let time_start = Instant::now();
 
     // NetworkSettingsRequest
