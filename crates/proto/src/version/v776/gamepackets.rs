@@ -9,7 +9,7 @@ use crate::v748::packets::{
     LegacyTelemetryEventPacket, MobArmorEquipmentPacket, PlayerActionPacket,
     PlayerArmorDamagePacket, ResourcePackStackPacket, ServerBoundDiagnosticsPacket,
     ServerBoundLoadingScreenPacket, SetActorDataPacket, SetActorLinkPacket, SetTitlePacket,
-    StartGamePacket, StopSoundPacket, TextPacket, TransferPlayerPacket, UpdateAttributesPacket,
+    StopSoundPacket, TextPacket, TransferPlayerPacket, UpdateAttributesPacket,
     UpdatePlayerGameTypePacket, UpdateSoftEnumPacket,
 };
 use crate::version::v662::packets::{
@@ -69,6 +69,7 @@ use crate::version::v766::packets::{
 use bedrockrs_macros::gamepackets;
 use bedrockrs_proto_core::sub_client::SubClientID;
 use std::io::{Cursor, Write};
+use crate::v776::packets::StartGamePacket;
 
 gamepackets! {
     CurrentStructureFeature: CurrentStructureFeaturePacket,
