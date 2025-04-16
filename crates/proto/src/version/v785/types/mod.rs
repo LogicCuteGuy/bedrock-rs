@@ -4,6 +4,3 @@ macro_rules! export {
         pub use $name::*;
     };
 }
-
-export!(structure_editor_data);
-export!(camera_instruction);
