@@ -1,5 +1,7 @@
 pub mod shard;
 
+use std::io::Error;
+use std::net::SocketAddr;
 use crate::codec::{decode_gamepackets, encode_gamepackets};
 use crate::compression::Compression;
 use crate::encryption::Encryption;
@@ -54,6 +56,11 @@ impl<T: ProtoHelper> Connection<T> {
 
 // Implement non-generic methods for Connection
 impl<T: ProtoHelper> Connection<T> {
+
+    pub async fn get_ip_address(&mut self) -> Result<SocketAddr, Error> {
+        self.transport_layer.get_ip_address().await
+    }
+
     pub async fn send_raw(&mut self, data: &[u8]) -> Result<(), ConnectionError> {
         self.transport_layer.send(data).await?;
         Ok(())

@@ -2,6 +2,7 @@ use crate::error::{RakNetError, TransportLayerError};
 use crate::info::RAKNET_GAMEPACKET_ID;
 use byteorder::{ReadBytesExt, WriteBytesExt};
 use std::io::{Cursor, Write};
+use std::net::SocketAddr;
 
 pub enum TransportLayerConnection {
     RakNet(rak_rs::connection::Connection),
@@ -11,6 +12,13 @@ pub enum TransportLayerConnection {
 }
 
 impl TransportLayerConnection {
+
+    pub async fn get_ip_address(&mut self) -> Result<SocketAddr, std::io::Error> {
+        match self {
+            Self::RakNet(conn) => Ok(conn.address),
+        }
+    }
+
     pub async fn send(&mut self, stream: &[u8]) -> Result<(), TransportLayerError> {
         match self {
             Self::RakNet(conn) => {
