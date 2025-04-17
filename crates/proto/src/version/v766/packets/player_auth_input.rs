@@ -87,7 +87,7 @@ impl PlayerAuthInputFlags {
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct ActionsEntry {
     pub action_type: ItemStackRequestActionType,
-    pub amount: i8,
+    pub amount: u8,
     pub source: ItemStackRequestSlotInfo,
     pub destination: ItemStackRequestSlotInfo,
 }
@@ -95,7 +95,7 @@ pub struct ActionsEntry {
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct PerformItemStackRequestData {
     #[endianness(var)]
-    pub client_request_id: u32,
+    pub client_request_id: i32,
     #[vec_repr(u32)]
     #[vec_endianness(var)]
     pub actions: Vec<ActionsEntry>,
@@ -117,13 +117,13 @@ pub struct ClientPredictedVehicleData {
 pub struct PlayerAuthInputPacket {
     pub player_rotation: Vec2<f32>,
     pub player_position: Vec3<f32>,
-    pub move_vector: Vec3<f32>,
+    pub move_vector: Vec2<f32>,
     pub player_head_rotation: f32,
     pub input_data: u128,
     pub input_mode: InputMode,
     pub play_mode: ClientPlayMode,
     pub new_interaction_model: NewInteractionModel,
-    pub interact_rotation: Vec3<f32>,
+    pub interact_rotation: Vec2<f32>,
     pub client_tick: u64,
     pub velocity: Vec3<f32>,
     pub item_use_transaction: Option<PackedItemUseLegacyInventoryTransaction>, // If input_data has PlayerAuthInputPacket::InputData::PerformItemInteraction set.
@@ -139,13 +139,13 @@ impl ProtoCodec for PlayerAuthInputPacket {
     fn proto_serialize(&self, stream: &mut Vec<u8>) -> Result<(), ProtoCodecError> {
         <Vec2<f32> as ProtoCodecLE>::proto_serialize(&self.player_rotation, stream)?;
         <Vec3<f32> as ProtoCodecLE>::proto_serialize(&self.player_position, stream)?;
-        <Vec3<f32> as ProtoCodecLE>::proto_serialize(&self.move_vector, stream)?;
+        <Vec2<f32> as ProtoCodecLE>::proto_serialize(&self.move_vector, stream)?;
         <f32 as ProtoCodecLE>::proto_serialize(&self.player_head_rotation, stream)?;
         <u128 as ProtoCodecVAR>::proto_serialize(&self.input_data, stream)?;
         <InputMode as ProtoCodec>::proto_serialize(&self.input_mode, stream)?;
         <ClientPlayMode as ProtoCodec>::proto_serialize(&self.play_mode, stream)?;
         <NewInteractionModel as ProtoCodec>::proto_serialize(&self.new_interaction_model, stream)?;
-        <Vec3<f32> as ProtoCodecLE>::proto_serialize(&self.interact_rotation, stream)?;
+        <Vec2<f32> as ProtoCodecLE>::proto_serialize(&self.interact_rotation, stream)?;
         <u64 as ProtoCodecVAR>::proto_serialize(&self.client_tick, stream)?;
         <Vec3<f32> as ProtoCodecLE>::proto_serialize(&self.velocity, stream)?;
         if &self.input_data & PlayerAuthInputFlags::PERFORM_ITEM_INTERACTION != 0 {
@@ -182,13 +182,13 @@ impl ProtoCodec for PlayerAuthInputPacket {
     fn proto_deserialize(stream: &mut Cursor<&[u8]>) -> Result<Self, ProtoCodecError> {
         let player_rotation = <Vec2<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
         let player_position = <Vec3<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
-        let move_vector = <Vec3<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
+        let move_vector = <Vec2<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
         let player_head_rotation = <f32 as ProtoCodecLE>::proto_deserialize(stream)?;
         let input_data = <u128 as ProtoCodecVAR>::proto_deserialize(stream)?;
         let input_mode = <InputMode as ProtoCodec>::proto_deserialize(stream)?;
         let play_mode = <ClientPlayMode as ProtoCodec>::proto_deserialize(stream)?;
         let new_interaction_model = <NewInteractionModel as ProtoCodec>::proto_deserialize(stream)?;
-        let interact_rotation = <Vec3<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
+        let interact_rotation = <Vec2<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
         let client_tick = <u64 as ProtoCodecVAR>::proto_deserialize(stream)?;
         let velocity = <Vec3<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
         let item_use_transaction = match &input_data
@@ -214,6 +214,7 @@ impl ProtoCodec for PlayerAuthInputPacket {
                 )?),
                 false => None,
             };
+
         let client_predicted_vehicle = match &input_data
             & PlayerAuthInputFlags::IS_IN_CLIENT_PREDICTED_VEHICLE
             != 0
@@ -221,8 +222,11 @@ impl ProtoCodec for PlayerAuthInputPacket {
             true => Some(<ClientPredictedVehicleData as ProtoCodec>::proto_deserialize(stream)?),
             false => None,
         };
+
         let analog_move_vector = <Vec2<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
+
         let camera_orientation = <Vec3<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
+
         let raw_move_vector = <Vec2<f32> as ProtoCodecLE>::proto_deserialize(stream)?;
 
         Ok(Self {
