@@ -86,7 +86,7 @@ gamepackets! {
     ServerBoundLoadingScreen: ServerBoundLoadingScreenPacket,
     SetMovementAuthority: SetMovementAuthorityPacket,
     Login: LoginPacket,
-    PlaySatus: PlayStatusPacket,
+    PlayStatus: PlayStatusPacket,
     ServerToClientHandshake: ServerToClientHandshakePacket,
     ClientToServerHandshake: ClientToServerHandshakePacket,
     Disconnect: DisconnectPacket,

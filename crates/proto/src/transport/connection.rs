@@ -68,7 +68,7 @@ impl TransportLayerConnection {
         Ok(stream)
     }
 
-    pub async fn close(self) {
+    pub async fn close(&mut self) {
         match self {
             Self::RakNet(conn) => {
                 conn.close().await;

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+
 use bedrockrs_macros::gamepacket;
 use bedrockrs_proto_core::{ProtoCodec, ProtoCodecVAR, ProtoCodecBE};
 use std::io::{Cursor, Read};
@@ -8,7 +8,16 @@ use base64::prelude::BASE64_STANDARD_NO_PAD;
 use serde_json::{Map, Value};
 use uuid::Uuid;
 use bedrockrs_proto_core::error::ProtoCodecError;
+use crate::client_chain_data::ClientChainData;
 use crate::v662::types::SerializedSkin;
+use std::time::{SystemTime, UNIX_EPOCH};
+use std::collections::HashMap;
+
+use base64::{engine::general_purpose, Engine as _};
+use p256::{
+    ecdsa::{VerifyingKey, signature::Verifier, Signature},
+    pkcs8::DecodePublicKey,
+};
 
 #[gamepacket(id = 1)] // Replace with the actual packet ID used for LoginPacket
 #[derive(Clone, Debug)]
@@ -19,14 +28,15 @@ pub struct LoginPacket {
     pub client_uuid: Uuid,
     pub client_id: i64,
     pub skin: SerializedSkin,
-    pub issue_unix_time: i64
+    pub issue_unix_time: i64,
+
+    pub client_chain_data: ClientChainData
 }
 
 impl ProtoCodec for LoginPacket {
     fn proto_serialize(&self, _stream: &mut Vec<u8>) -> Result<(), ProtoCodecError> {
         Ok(())
     }
-
 
     fn proto_deserialize(stream: &mut Cursor<&[u8]>) -> Result<Self, ProtoCodecError> {
 
@@ -109,7 +119,7 @@ fn decode_chain_data(buffer: &mut Cursor<&[u8]>) -> Result<(), ProtoCodecError> 
         Err(e) => {
             return Err(ProtoCodecError::FormatMismatch("Invalid UTF-8 string"));
         }
-    }; ;
+    };
     let parsed: HashMap<String, Vec<String>> = serde_json::from_str(chain_str)?;
 
     if let Some(chains) = parsed.get("chain") {
@@ -147,4 +157,74 @@ fn decode_token(token: &str) -> Option<Map<String, Value>> {
 
 fn read_lint(cursor: &mut Cursor<&[u8]>) -> Result<i32, ProtoCodecError> {
     <i32 as ProtoCodecVAR>::proto_deserialize(cursor)
+}
+
+pub fn verify_chain(chains: &[String]) -> Result<bool, Box<dyn std::error::Error>> {
+    let mut last_key: Option<VerifyingKey> = None;
+    let mut mojang_key_verified = false;
+    let now = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
+
+    for (i, token) in chains.iter().enumerate() {
+        let parts: Vec<&str> = token.split('.').collect();
+        if parts.len() != 3 {
+            return Ok(false);
+        }
+
+        let header_json = String::from_utf8(general_purpose::URL_SAFE_NO_PAD.decode(parts[0])?)?;
+        let payload_json = String::from_utf8(general_purpose::URL_SAFE_NO_PAD.decode(parts[1])?)?;
+
+        let header: Value = serde_json::from_str(&header_json)?;
+        let payload: Value = serde_json::from_str(&payload_json)?;
+
+        let x5u = header.get("x5u").and_then(|v| v.as_str()).ok_or("Missing x5u")?;
+        let expected_key = load_public_key(x5u)?;
+
+        // First key is self-signed
+        if last_key.is_none() {
+            last_key = Some(expected_key.clone());
+        } else if last_key.as_ref() != Some(&expected_key) {
+            return Ok(false);
+        }
+
+        if !verify_signature(&token, &expected_key)? {
+            return Ok(false);
+        }
+
+        if mojang_key_verified {
+            return Ok(i == chains.len() - 1); // Must be last
+        }
+
+        if expected_key == get_mojang_public_key()? {
+            mojang_key_verified = true;
+        }
+
+        let exp = payload.get("exp").and_then(|v| v.as_u64()).ok_or("Invalid exp")?;
+        if exp < now {
+            return Ok(false);
+        }
+
+        let identity_key = payload.get("identityPublicKey").and_then(|v| v.as_str()).ok_or("Missing identityPublicKey")?;
+        last_key = Some(load_public_key(identity_key)?);
+    }
+
+    Ok(mojang_key_verified)
+}
+
+fn load_public_key(base64_str: &str) -> Result<VerifyingKey, Box<dyn std::error::Error>> {
+    let der = general_purpose::STANDARD.decode(base64_str)?;
+    Ok(VerifyingKey::from_public_key_der(&der)?)
+}
+
+fn verify_signature(token: &str, key: &VerifyingKey) -> Result<bool, Box<dyn std::error::Error>> {
+    use p256::ecdsa::{Signature, signature::Verifier};
+    let parts: Vec<&str> = token.split('.').collect();
+    if parts.len() != 3 {
+        return Ok(false);
+    }
+
+    let signing_input = format!("{}.{}", parts[0], parts[1]);
+    let signature = general_purpose::URL_SAFE_NO_PAD.decode(parts[2])?;
+    let signature = Signature::from_der(&signature)?;
+
+    Ok(key.verify(signing_input.as_bytes(), &signature).is_ok())
 }

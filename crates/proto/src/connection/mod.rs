@@ -71,7 +71,7 @@ impl<T: ProtoHelper> Connection<T> {
         Ok(stream)
     }
 
-    pub async fn close(self) {
+    pub async fn close(&mut self) {
         self.transport_layer.close().await;
     }
 }
