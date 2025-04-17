@@ -1,5 +1,5 @@
-use crate::version::v662::types::ChunkPos;
 use bedrockrs_macros::{gamepacket, ProtoCodec};
+use crate::v729::types::chunk_pos::ChunkPos;
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct CacheBlobEntry {
