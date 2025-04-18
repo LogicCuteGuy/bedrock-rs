@@ -1,14 +1,18 @@
 use std::collections::BTreeMap;
 use std::io::{Cursor, Read};
 
-use base64::prelude::BASE64_STANDARD;
+use base64::engine::general_purpose::STANDARD;
+use base64::prelude::{BASE64_STANDARD, BASE64_STANDARD_NO_PAD, BASE64_URL_SAFE_NO_PAD};
 use base64::Engine;
 use bedrockrs_proto_core::error::ProtoCodecError;
 use bedrockrs_proto_core::ProtoCodec;
 use byteorder::{LittleEndian, ReadBytesExt};
 use jsonwebtoken::{DecodingKey, Validation};
+use p384::pkcs8::DecodePublicKey;
+use p384::PublicKey;
 use serde_json::Value;
 use varint_rs::VarintReader;
+use crate::info::MOAJNG_PUBLIC_KEY;
 
 #[derive(Debug, Clone)]
 pub struct ConnectionRequest {
@@ -78,6 +82,8 @@ pub struct ConnectionRequest {
     /// - CapeId
     /// - CompatibleWithClientSideChunkGen
     pub raw_token: BTreeMap<String, Value>,
+    xbox_auth: bool,
+    identity_public_key: String,
 }
 
 fn read_i32_string(stream: &mut Cursor<&[u8]>) -> Result<String, ProtoCodecError> {
@@ -90,6 +96,16 @@ fn read_i32_string(stream: &mut Cursor<&[u8]>) -> Result<String, ProtoCodecError
     stream.read_exact(&mut string_buf)?;
 
     Ok(String::from_utf8(string_buf)?)
+}
+
+impl ConnectionRequest {
+    pub fn is_xbox_auth(&self) -> bool {
+        self.xbox_auth
+    }
+
+    pub fn get_identity_public_key(&self) -> String {
+        self.identity_public_key.clone()
+    }
 }
 
 impl ProtoCodec for ConnectionRequest {
@@ -146,6 +162,8 @@ impl ProtoCodec for ConnectionRequest {
         };
 
         let mut key_data = vec![];
+        let mut last_key = String::new();
+        let mut authenticated = false;
 
         for jwt_json in certificate_chain_json_jwts {
             let jwt_string = match jwt_json {
@@ -169,16 +187,22 @@ impl ProtoCodec for ConnectionRequest {
             jwt_validation.set_required_spec_claims::<&str>(&[]);
 
             // Is first jwt, use self-signed header from x5u
-            if key_data.is_empty() {
-                let x5u = jwt_header.x5u.ok_or(ProtoCodecError::FormatMismatch(
-                    "Expected x5u in JWT header",
-                ))?;
+            let x5u = jwt_header.x5u.ok_or(ProtoCodecError::FormatMismatch(
+                "Expected x5u in JWT header",
+            ))?;
 
+            if key_data.is_empty() {
                 let x5u = x5u.as_bytes();
 
                 key_data = BASE64_STANDARD
                     .decode(x5u)
                     .map_err(ProtoCodecError::Base64DecodeError)?;
+            } else if (last_key != x5u) {
+                 continue
+            }
+
+            if (x5u == MOAJNG_PUBLIC_KEY) {
+                authenticated = true;
             }
 
             // Decode the jwt string into a jwt object
@@ -207,7 +231,8 @@ impl ProtoCodec for ConnectionRequest {
                 }
             };
 
-            certificate_chain.push(jwt.claims);
+            certificate_chain.push(jwt.claims.clone());
+            last_key = identity_field.clone().to_string().trim_matches('"').to_string();
         }
 
         let raw_token_string = read_i32_string(stream)?;
@@ -222,6 +247,7 @@ impl ProtoCodec for ConnectionRequest {
         jwt_validation.insecure_disable_signature_validation();
         jwt_validation.set_required_spec_claims::<&str>(&[]);
 
+
         // Decode the jwt string into a jwt object
         let raw_token = jsonwebtoken::decode::<BTreeMap<String, Value>>(
             &raw_token_string,
@@ -234,6 +260,8 @@ impl ProtoCodec for ConnectionRequest {
         Ok(Self {
             certificate_chain,
             raw_token,
+            xbox_auth: authenticated,
+            identity_public_key: last_key
         })
     }
 
@@ -241,4 +269,10 @@ impl ProtoCodec for ConnectionRequest {
         // TODO
         1
     }
+}
+
+fn parse_der_public_key(base64_key: &str) -> Result<PublicKey, Box<dyn std::error::Error>> {
+    let der = BASE64_STANDARD.decode(base64_key)?;
+    let public_key = PublicKey::from_public_key_der(&der)?;
+    Ok(public_key)
 }

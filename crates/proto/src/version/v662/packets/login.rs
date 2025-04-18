@@ -9,9 +9,8 @@ use std::collections::HashMap;
 use std::io::{Cursor, Read};
 use std::mem::size_of;
 use uuid::Uuid;
-
 use base64::Engine as _;
-
+use tokio::fs::File;
 #[gamepacket(id = 1)] // Replace with the actual packet ID used for LoginPacket
 #[derive(Clone, Debug)]
 pub struct LoginPacket {
@@ -141,8 +140,8 @@ fn decode_token(token: &str) -> Option<Map<String, Value>> {
         return None;
     }
 
-    let decoded = BASE64_STANDARD_NO_PAD.decode(parts[1]).ok()?;
-    let json_str = std::str::from_utf8(&decoded).ok()?;
+    let body = BASE64_STANDARD_NO_PAD.decode(parts[1]).ok()?;
+    let json_str = std::str::from_utf8(&body).ok()?;
     serde_json::from_str::<Map<String, Value>>(json_str).ok()
 }
 

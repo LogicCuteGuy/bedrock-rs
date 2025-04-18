@@ -29,7 +29,7 @@ use crate::version::v662::packets::{
     GuiDataPickItemPacket, HurtArmorPacket, InteractPacket, InventoryTransactionPacket,
     ItemComponentPacket, LabTablePacket, LecternUpdatePacket, LessonProgressPacket,
     LevelChunkPacket, LevelEventGenericPacket, LevelEventPacket, LevelSoundEventPacket,
-    LevelSoundEventPacketV1, LevelSoundEventPacketV2, LoginPacket, MapCreateLockedCopyPacket,
+    LevelSoundEventPacketV1, LevelSoundEventPacketV2, MapCreateLockedCopyPacket,
     MapInfoRequestPacket, MobEffectPacket, MobEquipmentPacket, ModalFormRequestPacket,
     ModalFormResponsePacket, MotionPredictionHintsPacket, MoveActorAbsolutePacket,
     MoveActorDeltaPacket, MovePlayerPacket, MultiplayerSettingsPacket,
@@ -73,7 +73,7 @@ use crate::v729::packets::play_status::PlayStatusPacket;
 use crate::v766::packets::CameraAimAssistPacket;
 use crate::v776::packets::{CameraAimAssistPresetsPacket, ClientCameraAimAssistPacket, ClientMovementPredictionSyncPacket, CommandBlockUpdatePacket, CreativeContentPacket, ItemRegistryPacket, StartGamePacket};
 use crate::v785::packets::{PlayerUpdateEntityOverridesPacket, PlayerVideoCapturePacket, UpdateClientOptionsPacket};
-
+use crate::v729::packets::login::LoginPacket;
 gamepackets! {
     CurrentStructureFeature: CurrentStructureFeaturePacket,
     MovementEffect: MovementEffectPacket,
