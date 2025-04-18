@@ -26,7 +26,6 @@ pub fn decode_gamepackets<T: ProtoHelper>(
     encryption: Option<&mut Encryption>,
 ) -> Result<Vec<T::GamePacketType>, ProtoCodecError> {
     log::trace!("Decoding gamepackets");
-
     gamepacket_stream = decrypt_gamepackets::<T>(gamepacket_stream, encryption)?;
     gamepacket_stream = decompress_gamepackets::<T>(gamepacket_stream, compression)?;
     let gamepackets = separate_gamepackets::<T>(gamepacket_stream)?;
@@ -101,7 +100,7 @@ pub fn encrypt_gamepackets<T: ProtoHelper>(
     encryption: Option<&mut Encryption>,
 ) -> Result<Vec<u8>, ProtoCodecError> {
     if let Some(encryption) = encryption {
-        gamepacket_stream = encryption.encrypt(gamepacket_stream)?;
+        gamepacket_stream = encryption.encrypt(gamepacket_stream);
     }
 
     Ok(gamepacket_stream)
@@ -112,7 +111,8 @@ pub fn decrypt_gamepackets<T: ProtoHelper>(
     encryption: Option<&mut Encryption>,
 ) -> Result<Vec<u8>, ProtoCodecError> {
     if let Some(encryption) = encryption {
-        gamepacket_stream = encryption.decrypt(gamepacket_stream)?;
+        println!("Decrypting gamepacket stream");
+        gamepacket_stream = encryption.decrypt(gamepacket_stream).unwrap();
     }
 
     Ok(gamepacket_stream)
