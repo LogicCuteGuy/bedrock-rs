@@ -81,8 +81,6 @@ impl Encryption {
             return Err("Payload is too short".to_string());
         }
 
-        println!("decrypting {} bytes", encrypted.len());
-
         // Decrypt the data
         let mut decrypted = encrypted.clone();
         self.decrypt_cipher.apply_keystream(&mut decrypted);
