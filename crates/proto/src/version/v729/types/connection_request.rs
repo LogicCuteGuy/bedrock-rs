@@ -270,9 +270,3 @@ impl ProtoCodec for ConnectionRequest {
         1
     }
 }
-
-fn parse_der_public_key(base64_key: &str) -> Result<PublicKey, Box<dyn std::error::Error>> {
-    let der = BASE64_STANDARD.decode(base64_key)?;
-    let public_key = PublicKey::from_public_key_der(&der)?;
-    Ok(public_key)
-}
