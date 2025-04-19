@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use thiserror::Error;
+use zip::result::ZipError;
 
 #[derive(Error, Debug, Clone)]
 pub enum AddonError {
@@ -17,4 +18,6 @@ pub enum AddonError {
         line: Option<usize>,
         column: Option<usize>,
     },
+    #[error("ZipError at {0}: {1}")]
+    ZipError(Arc<ZipError>, PathBuf),
 }

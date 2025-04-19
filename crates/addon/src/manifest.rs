@@ -14,11 +14,11 @@ pub struct AddonManifest {
     /// Section containing information regarding the type of content that is being brought in.
     pub modules: Vec<AddonManifestModule>,
     /// Section containing definitions for any other packs that are required in order for this manifest.json file to work.
-    pub dependencies: Vec<AddonManifestDependency>,
+    pub dependencies: Option<Vec<AddonManifestDependency>>,
     /// Section containing optional features that can be enabled in Minecraft.
     pub capabilities: Option<Vec<String>>,
     /// Section containing the metadata about the file such as authors and licensing information.
-    pub metadata: AddonManifestMetadata,
+    pub metadata: Option<AddonManifestMetadata>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

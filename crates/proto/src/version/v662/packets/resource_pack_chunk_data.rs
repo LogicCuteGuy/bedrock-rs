@@ -8,5 +8,7 @@ pub struct ResourcePackChunkDataPacket {
     pub chunk_id: u32,
     #[endianness(le)]
     pub byte_offset: u64,
-    pub chunk_data: String,
+    #[vec_repr(u32)]
+    #[vec_endianness(var)]
+    pub chunk_data: Vec<u8>,
 }

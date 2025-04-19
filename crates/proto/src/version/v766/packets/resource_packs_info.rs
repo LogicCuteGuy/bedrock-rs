@@ -1,8 +1,9 @@
+use uuid::Uuid;
 use bedrockrs_macros::{gamepacket, ProtoCodec};
 
 #[derive(ProtoCodec, Clone, Debug)]
 pub struct ResourcePackEntry {
-    pub id: String,
+    pub id: Uuid,
     pub version: String,
     #[endianness(le)]
     pub size: u64,
@@ -21,7 +22,7 @@ pub struct ResourcePacksInfoPacket {
     pub resource_pack_required: bool,
     pub has_addon_packs: bool,
     pub has_scripts: bool,
-    pub world_template_uuid: uuid::Uuid,
+    pub world_template_uuid: Uuid,
     pub world_template_version: String,
     #[vec_repr(u16)]
     #[vec_endianness(le)]
