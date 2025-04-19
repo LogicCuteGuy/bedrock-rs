@@ -1,26 +1,20 @@
-use std::collections::BTreeMap;
-use aes_gcm::{Aes256Gcm, Key, Nonce};
-use aes_gcm::aead::Aead;
-use base64::Engine;
+use aes::Aes256;
+use aes_gcm::KeyInit;
 use base64::engine::general_purpose::STANDARD;
 use base64::prelude::BASE64_STANDARD;
-use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
-use p384::ecdh::EphemeralSecret;
-use p384::ecdsa::SigningKey;
-use p384::elliptic_curve::rand_core::OsRng;
-use p384::pkcs8::{DecodePublicKey, EncodePrivateKey, EncodePublicKey};
-use p384::PublicKey;
-use serde::Serialize;
-use serde_json::json;
+use base64::Engine;
 use bedrockrs_proto_core::error::EncryptionError;
-use aes_gcm::KeyInit;
-use p384::SecretKey;
-use p384::ecdh::diffie_hellman;
-use p384::elliptic_curve::ecdh::SharedSecret;
-use p384::NistP384;
-use aes::Aes256;
 use ctr::cipher::{KeyIvInit, StreamCipher};
 use ctr::Ctr128BE;
+use jsonwebtoken::{encode, EncodingKey};
+use p384::ecdh::diffie_hellman;
+use p384::ecdsa::SigningKey;
+use p384::elliptic_curve::ecdh::SharedSecret;
+use p384::elliptic_curve::rand_core::OsRng;
+use p384::pkcs8::{DecodePublicKey, EncodePrivateKey, EncodePublicKey};
+use p384::NistP384;
+use p384::PublicKey;
+use serde::Serialize;
 use sha2::{Digest, Sha256};
 type Aes256Ctr = Ctr128BE<Aes256>;
 
@@ -183,20 +177,8 @@ impl Encryption {
     }
 
     pub fn create_handshake_jwt(signing_key: &SigningKey, token: &[u8]) -> Result<String, Box<dyn std::error::Error>> {
-        // Create salt claim
-        // let claims = Claims {
-        //     salt: STANDARD.encode(token),
-        // };
-
-        // Encode private key to DER for jwt crate
-        // let binding = signing_key.to_pkcs8_der()?;
-        // let der = binding.as_bytes();
-
-        // Create a custom header
-        // Set "x5u" header with base64-encoded public key (not standard, but matching your Java intent)
         let public_key = signing_key.verifying_key().to_public_key_der().unwrap();
         let x5u = STANDARD.encode(public_key);
-        // header.x5u = Some(STANDARD.encode(public_key));
 
         let header = CustomHeader {
             alg: "ES384".to_string(),
@@ -211,17 +193,9 @@ impl Encryption {
         let priv_der = signing_key.to_pkcs8_der().unwrap();
         let encoding_key = EncodingKey::from_ec_der(priv_der.as_bytes());
 
-        // Encode manually: `encode` accepts a raw JSON string as header if needed
         let header_json = serde_json::to_string(&header).unwrap();
         let jwt = encode(&serde_json::from_str(&header_json).unwrap(), &payload, &encoding_key)
             .expect("JWT generation failed");
-        // Encode the JWT
-        // let jwt = encode(
-        //     &header,
-        //     &claims,
-        //     &EncodingKey::from_ec_der(der),
-        // )?;
-
         Ok(jwt)
     }
 }

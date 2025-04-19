@@ -4,8 +4,8 @@ use bedrockrs_macros::ProtoCodec;
 #[enum_repr(u8)]
 #[repr(u8)]
 pub enum ResourcePackResponse {
-    Cancel = 1,
-    Downloading = 2,
-    DownloadingFinished = 3,
-    ResourcePackStackFinished = 4,
+    Refused = 1,
+    SendPacks = 2,
+    HaveAllPacks = 3,
+    Completed = 4,
 }
